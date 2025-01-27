@@ -4,6 +4,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '@prisma/client';
 
+type UserWithoutPassword = Pick<User, 'id' | 'email'>;
+
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
@@ -14,13 +16,24 @@ export class UsersService {
     });
   }
 
-  findAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
+  findAll(): Promise<UserWithoutPassword[]> {
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        password: false,
+      },
+    });
   }
 
-  findOne(id: number): Promise<User | null> {
+  findOne(id: number): Promise<UserWithoutPassword | null> {
     return this.prisma.user.findUnique({
       where: { id },
+      select: {
+        id: true,
+        email: true,
+        password: false,
+      },
     });
   }
 
