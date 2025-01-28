@@ -26,9 +26,19 @@ export class UsersService {
     });
   }
 
-  findOne(id: number): Promise<UserWithoutPassword | null> {
-    return this.prisma.user.findUnique({
-      where: { id },
+  findOne(filters: { id?: number; email?: string }): Promise<UserWithoutPassword | null> {
+    const { id, email } = filters;
+    const where: { id?: number; email?: string } = {};
+    if (id) {
+      where['id'] = id;
+    }
+
+    if (email) {
+      where['email'] = email;
+    }
+
+    return this.prisma.user.findFirst({
+      where: { ...where },
       select: {
         id: true,
         email: true,
