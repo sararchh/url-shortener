@@ -1,24 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+  Req,
+} from '@nestjs/common';
 import { UrlsService } from './urls.service';
-import { CreateUrlDto } from './dto/create-url.dto';
 import { UpdateUrlDto } from './dto/update-url.dto';
+import { generateShortUrl } from 'src/utils/generate-short-url.util';
+import { Request } from '@nestjs/common';
 
 @Controller('urls')
 export class UrlsController {
   constructor(private readonly urlsService: UrlsService) {}
 
   @Post()
-  create(@Body() createUrlDto: CreateUrlDto) {
-    return this.urlsService.create(createUrlDto);
+  create(@Body('url') url: string, @Req() req: Request) {
+    const shortUrl = generateShortUrl();
+    // TODO
+    return {};
   }
 
   @Get()
   findAll() {
-    return this.urlsService.findAll();
+    return this.urlsService.findAll({ active: true });
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    //TODO - ATUALIZAR CONTADOR DE VISITAS
     return this.urlsService.findOne(+id);
   }
 
@@ -28,7 +42,12 @@ export class UrlsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.urlsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const url = await this.urlsService.findOne(+id);
+    if (url) {
+      return this.urlsService.remove(+id, url);
+    } else {
+      throw new NotFoundException(`URL with id ${id} not found`);
+    }
   }
 }

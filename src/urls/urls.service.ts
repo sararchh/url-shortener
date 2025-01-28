@@ -1,26 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UpdateUrlDto } from './dto/update-url.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UrlsService {
-  create(createUrlDto: CreateUrlDto) {
-    return 'This action adds a new url';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createUrlDto: CreateUrlDto) {
+    return this.prisma.url.create({
+      data: createUrlDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all urls`;
+  async findAll(filter: { active?: boolean }) {
+    const where = filter?.active ? { deletedAt: null } : {};
+    return this.prisma.url.findMany({
+      where,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} url`;
+  async findOne(id: number) {
+    return this.prisma.url.findUnique({
+      where: { id },
+    });
   }
 
-  update(id: number, updateUrlDto: UpdateUrlDto) {
-    return `This action updates a #${id} url`;
+  async update(id: number, updateUrlDto: UpdateUrlDto) {
+    return this.prisma.url.update({
+      where: { id },
+      data: updateUrlDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} url`;
+  async remove(id: number, updateUrlDto: UpdateUrlDto) {
+    return this.prisma.url.update({
+      where: { id },
+      data: { ...updateUrlDto, deletedAt: new Date() },
+    });
   }
 }

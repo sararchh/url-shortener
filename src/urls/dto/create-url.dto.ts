@@ -10,5 +10,5 @@ export class CreateUrlDto {
   shortUrl: string;
 
   @IsOptional()
-  userId?: number;
+  userId?: number | null;
 }
