@@ -11,6 +11,7 @@ import {
   Headers,
   UseGuards,
   Request,
+  Redirect,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
@@ -19,6 +20,7 @@ import { UrlsService } from './urls.service';
 import { UpdateUrlDto } from './dto/update-url.dto';
 import { generateShortUrl } from 'src/utils/generate-short-url.util';
 import { CreateUrlDto } from './dto/create-url.dto';
+import { Url } from './entities/url.entity';
 
 @Controller('urls')
 export class UrlsController {
@@ -74,11 +76,23 @@ export class UrlsController {
   }
 
   @Get(':url')
-  findOne(@Param('url') url: string) {
-    // console.log('🚀url:', url);
-    //TODO - ATUALIZAR CONTADOR DE VISITAS
-    // return this.urlsService.findOne(+id);
-    return {};
+  @Redirect()
+  async findOne(@Param('url') url: string) {
+    try {
+      const urlData: Url | null = await this.urlsService.findOne(url);
+      if (!urlData || !urlData.url) {
+        throw new NotFoundException(`URL not found`);
+      }
+
+      await this.urlsService.update(urlData.id, {
+        ...urlData,
+        clickCount: (urlData.clickCount || 0) + 1,
+      });
+
+      return { url: urlData.url, statusCode: 302 };
+    } catch (error) {
+      throw new NotFoundException(`URL not found - ${error.message}`);
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -87,14 +101,14 @@ export class UrlsController {
     return this.urlsService.update(+id, updateUrlDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    const url = await this.urlsService.findOne(+id);
-    if (url) {
-      return this.urlsService.remove(+id, url);
-    } else {
-      throw new NotFoundException(`URL with id ${id} not found`);
-    }
-  }
+  // @UseGuards(AuthGuard('jwt'))
+  // @Delete(':id')
+  // async remove(@Param('id') id: string) {
+  //   const url = await this.urlsService.findOne(+id);
+  //   if (url) {
+  //     return this.urlsService.remove(+id, url);
+  //   } else {
+  //     throw new NotFoundException(`URL with id ${id} not found`);
+  //   }
+  // }
 }

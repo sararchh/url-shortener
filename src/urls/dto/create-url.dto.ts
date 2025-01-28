@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsOptional, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsUrl, IsNumber } from 'class-validator';
 
 export class CreateUrlDto {
   @IsUrl()
@@ -8,6 +8,10 @@ export class CreateUrlDto {
   @IsString()
   @IsOptional()
   shortUrl: string;
+
+  @IsNumber()
+  @IsOptional()
+  clickCount?: number;
 
   @IsOptional()
   userId?: number | null;

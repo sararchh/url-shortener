@@ -40,7 +40,7 @@ export class UsersService {
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     return this.prisma.user.update({
       where: { id },
-      data: updateUserDto,
+      data: { ...updateUserDto, updatedAt: new Date() },
     });
   }
 

@@ -1,8 +1,10 @@
 export class Url {
   id: number;
-  longUrl: string;
-  shortUrl?: string;
+  userId?: number | null;
+  url: string;
+  shortUrl: string;
+  clickCount: number;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date;
+  deletedAt?: Date | null;
 }
