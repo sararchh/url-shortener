@@ -13,8 +13,11 @@ export class UrlsService {
     });
   }
 
-  async findAll(filter: { active?: boolean }) {
-    const where = filter?.active ? { deletedAt: null } : {};
+  async findAll(filter: { active?: boolean; userId?: number }) {
+    let where = filter?.active ? { deletedAt: null } : {};
+    if (filter?.userId) {
+      where['userId'] = filter.userId;
+    }
     return this.prisma.url.findMany({
       where,
     });
