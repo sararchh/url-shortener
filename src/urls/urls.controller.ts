@@ -130,14 +130,15 @@ export class UrlsController {
     }
   }
 
-  // @UseGuards(AuthGuard('jwt'))
-  // @Delete(':id')
-  // async remove(@Param('id') id: string) {
-  //   const url = await this.urlsService.findOne(+id);
-  //   if (url) {
-  //     return this.urlsService.remove(+id, url);
-  //   } else {
-  //     throw new NotFoundException(`URL with id ${id} not found`);
-  //   }
-  // }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete(':id')
+  async remove(@Param('id') id: string, @Request() req) {
+    const userId = Number(req.user.userId);
+    const url = await this.urlsService.findOne({ id: +id, userId, active: true });
+    if (url) {
+      return this.urlsService.remove(+id, url);
+    } else {
+      throw new NotFoundException(`URL with id ${id} not found`);
+    }
+  }
 }
