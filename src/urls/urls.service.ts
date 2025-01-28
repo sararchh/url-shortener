@@ -15,7 +15,7 @@ export class UrlsService {
   }
 
   async findAll(filter: { active?: boolean; userId?: number }) {
-    let where = filter?.active ? { deletedAt: null } : {};
+    const where = filter?.active ? { deletedAt: null } : {};
     if (filter?.userId) {
       where['userId'] = filter.userId;
     }
@@ -24,9 +24,31 @@ export class UrlsService {
     });
   }
 
-  async findOne(shortUrl: string):Promise<Url | null> {
+  async findOne(filters: {
+    shortUrl?: string;
+    userId?: number;
+    id?: number;
+    active?: boolean;
+  }): Promise<Url | null> {
+    const { shortUrl, userId, id, active } = filters;
+
+    const where: any = {};
+    if (shortUrl) {
+      where.shortUrl = shortUrl;
+    }
+    if (userId) {
+      where.userId = userId;
+    }
+    if (id) {
+      where.id = id;
+    }
+
+    if (active) {
+      where.deletedAt = null;
+    }
+
     return this.prisma.url.findFirst({
-      where: { shortUrl },
+      where,
     });
   }
 

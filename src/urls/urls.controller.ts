@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   NotFoundException,
@@ -12,6 +11,9 @@ import {
   UseGuards,
   Request,
   Redirect,
+  Put,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
@@ -79,7 +81,7 @@ export class UrlsController {
   @Redirect()
   async findOne(@Param('url') url: string) {
     try {
-      const urlData: Url | null = await this.urlsService.findOne(url);
+      const urlData: Url | null = await this.urlsService.findOne({ shortUrl: url });
       if (!urlData || !urlData.url) {
         throw new NotFoundException(`URL not found`);
       }
@@ -96,9 +98,36 @@ export class UrlsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUrlDto: UpdateUrlDto) {
-    return this.urlsService.update(+id, updateUrlDto);
+  @Put(':id')
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  async update(
+    @Param('id') id: string,
+    @Body() updateUrlDto: UpdateUrlDto,
+    @Request() req,
+  ) {
+    try {
+      const userId = Number(req.user.userId);
+      const url = await this.urlsService.findOne({
+        id: +id,
+        userId,
+        active: true,
+      });
+
+      if (!url) {
+        throw new NotFoundException(
+          `URL with id ${id} not found or not active for user logged`,
+        );
+      }
+
+      const urlUpdated = await this.urlsService.update(+id, updateUrlDto);
+      if (!urlUpdated) {
+        throw new NotFoundException(`URL with id ${id} not updated`);
+      }
+
+      return urlUpdated;
+    } catch (error) {
+      throw new NotFoundException(`URL with id ${id} not found - ${error.message}`);
+    }
   }
 
   // @UseGuards(AuthGuard('jwt'))
