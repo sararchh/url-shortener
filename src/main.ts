@@ -9,7 +9,6 @@ async function bootstrap() {
     .setTitle('Shorten URL API')
     .setDescription('The shorten URL API')
     .setVersion('1.0')
-    .addTag('shorten-url')
     .addBearerAuth()
     .build();
 

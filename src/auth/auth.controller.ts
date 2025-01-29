@@ -11,6 +11,8 @@ import { AuthLoginDTO } from './dto/auth-login.dto';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { AuthResponseDTO } from './dto/auth-response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +22,16 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @ApiOperation({ summary: 'Login' })
+  @ApiBody({ type: AuthLoginDTO })
+  @ApiResponse({
+    status: 200,
+    description: 'Login successful',
+    type: AuthResponseDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async login(@Body() body: AuthLoginDTO) {
     try {
@@ -34,6 +46,16 @@ export class AuthController {
   }
 
   @Post('register')
+  @ApiOperation({ summary: 'Register' })
+  @ApiBody({ type: AuthRegisterDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'User registered successfully',
+    type: AuthResponseDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 409, description: 'Conflict - Email already exists' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async register(@Body() body: AuthRegisterDTO) {
     try {
