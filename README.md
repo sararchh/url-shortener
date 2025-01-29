@@ -22,13 +22,17 @@ $ yarn install
 
 ### Configurar variáveis de ambiente
 
-Renomeie o arquivo `.env.example` para `.env` e preencha as variáveis de ambiente:
+Renomeie o arquivo `.env.example` para `.env` e preencha as variáveis de ambiente, seguindo o exemplo:
 
 ```bash
-DATABASE_URL=string
-JWT_SECRET=string 
-PORT=number
-SALT_ROUNDS=number
+DATABASE_URL="postgresql://master:123456@database:5432/mydb?schema=public"
+POSTGRES_USER="master"
+POSTGRES_PASSWORD=123456
+POSTGRES_DB="mydb"
+
+JWT_SECRET="mysecretjwt"
+PORT=3000
+SALT_ROUNDS=10
 ```
 
 ### Executar migrações
@@ -42,16 +46,17 @@ $ yarn migration:run
 Para iniciar o container:
 
 ```bash
-$ docker-compose up -d
+$ docker-compose up --build -d
 ```
 
 Para parar o container:
 
 ```bash
-$ docker-compose down -d
+$ docker-compose down
 ```
 
-## Compilar e executar o projeto
+
+## Compilar e executar o projeto sem Docker
 
 ### Desenvolvimento
 
