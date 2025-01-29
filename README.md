@@ -49,10 +49,10 @@ Para parar o container:
 $ docker-compose down
 ```
 
-
 ## Compilar e executar o projeto sem Docker
 
 ### Executar migrações
+
 ```bash
 $ yarn migration:run
 ```

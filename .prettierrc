@@ -4,8 +4,8 @@
   "endOfLine": "auto",
 
   "arrowParens": "avoid",
-	"bracketSpacing": true,
-	"bracketSameLine": false,
-	"printWidth": 90,
-	"semi": true
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "printWidth": 90,
+  "semi": true
 }
