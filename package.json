@@ -22,8 +22,7 @@
     "migration:generate": "prisma migrate dev --name init",
     "migration:run": "prisma migrate dev",
     "reinstall-deps": "rm -rf node_modules yarn.lock && yarn ",
-    "start:migrate:prod": "npm run migration:run && npm run start:prod",
-    "preinstall": "npx only-allow yarn"
+    "start:migrate:prod": "npm run migration:run && npm run start:prod"
   },
   "dependencies": {
     "@nestjs/common": "11.0.1",

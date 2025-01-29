@@ -35,12 +35,6 @@ PORT=3000
 SALT_ROUNDS=10
 ```
 
-### Executar migrações
-
-```bash
-$ yarn migration:run
-```
-
 ### Executar Docker Compose
 
 Para iniciar o container:
@@ -57,6 +51,11 @@ $ docker-compose down
 
 
 ## Compilar e executar o projeto sem Docker
+
+### Executar migrações
+```bash
+$ yarn migration:run
+```
 
 ### Desenvolvimento
 
