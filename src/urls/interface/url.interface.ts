@@ -1,4 +1,4 @@
-export class Url {
+export interface IUrl {
   id: number;
   userId?: number | null;
   url: string;

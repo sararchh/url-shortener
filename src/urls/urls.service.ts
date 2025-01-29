@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UpdateUrlDto } from './dto/update-url.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Url } from './entities/url.entity';
+import { IUrl } from './interface/url.interface';
 
 @Injectable()
 export class UrlsService {
@@ -29,7 +29,7 @@ export class UrlsService {
     userId?: number;
     id?: number;
     active?: boolean;
-  }): Promise<Url | null> {
+  }): Promise<IUrl | null> {
     const { shortUrl, userId, id, active } = filters;
 
     const where: any = {};

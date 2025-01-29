@@ -90,3 +90,6 @@ Este projeto utiliza o padrão de commits convencionais. Por favor, siga as regr
 ```
 feat: add endpoint to shorten URL
 ```
+
+### Swagger
+- Se encontra na rota /api/docs 

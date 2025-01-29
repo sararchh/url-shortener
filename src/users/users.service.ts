@@ -10,10 +10,11 @@ type UserWithoutPassword = Pick<User, 'id' | 'email'>;
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    return this.prisma.user.create({
+  async create(createUserDto: CreateUserDto): Promise<UserWithoutPassword> {
+    const user = await this.prisma.user.create({
       data: createUserDto,
     });
+    return { id: user.id, email: user.email };
   }
 
   findAll(): Promise<UserWithoutPassword[]> {
@@ -47,11 +48,12 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    return this.prisma.user.update({
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<UserWithoutPassword> {
+    const user = await this.prisma.user.update({
       where: { id },
       data: { ...updateUserDto, updatedAt: new Date() },
     });
+    return { id: user.id, email: user.email };
   }
 
   remove(id: number): Promise<User> {
