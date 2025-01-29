@@ -22,7 +22,10 @@
     "migration:generate": "prisma migrate dev --name init",
     "migration:run": "prisma migrate dev",
     "reinstall-deps": "rm -rf node_modules yarn.lock && yarn ",
-    "start:migrate:prod": "npm run migration:run && npm run start:prod"
+    "start:migrate:prod": "npm run migration:run && npm run start:prod",
+    "prepare": "husky",
+    "pre-commit": "yarn lint",
+    "format:fix": "prettier --write --list-different ."
   },
   "dependencies": {
     "@nestjs/common": "11.0.1",
