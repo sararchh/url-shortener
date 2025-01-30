@@ -69,6 +69,20 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## Rodar Testes
+
+### Rodar todos os testes
+
+```bash
+$ yarn test
+```
+
+### Rodar testes em modo watch
+
+```bash
+$ yarn test:watch
+```
+
 ## Padrão de Commit
 
 Este projeto utiliza o padrão de commits convencionais. Por favor, siga as regras abaixo ao escrever suas mensagens de commit:
@@ -92,4 +106,4 @@ feat: add endpoint to shorten URL
 ```
 
 ### Swagger
-- Se encontra na rota /api/docs 
+- Se encontra na rota /api/docs
