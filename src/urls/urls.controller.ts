@@ -20,7 +20,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { UrlsService } from './urls.service';
 import { UpdateUrlDto } from './dto/update-url.dto';
-import { generateShortUrl } from 'src/utils/generate-short-url.util';
+import { generateShortUrl } from '@/utils/generate-short-url.util';
 import { CreateUrlDto } from './dto/create-url.dto';
 
 import { ApiBody, ApiHeader, ApiOperation, ApiResponse } from '@nestjs/swagger';

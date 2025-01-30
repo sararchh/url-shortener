@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UpdateUrlDto } from './dto/update-url.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
 import { IUrl } from './interface/url.interface';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class UrlsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createUrlDto: CreateUrlDto) {
-    return this.prisma.url.create({
+    return await this.prisma.url.create({
       data: createUrlDto,
     });
   }
@@ -19,7 +19,7 @@ export class UrlsService {
     if (filter?.userId) {
       where['userId'] = filter.userId;
     }
-    return this.prisma.url.findMany({
+    return await this.prisma.url.findMany({
       where,
     });
   }
@@ -47,20 +47,20 @@ export class UrlsService {
       where.deletedAt = null;
     }
 
-    return this.prisma.url.findFirst({
+    return await this.prisma.url.findFirst({
       where,
     });
   }
 
   async update(id: number, updateUrlDto: UpdateUrlDto) {
-    return this.prisma.url.update({
+    return await this.prisma.url.update({
       where: { id },
       data: { ...updateUrlDto, updatedAt: new Date() },
     });
   }
 
   async remove(id: number, updateUrlDto: UpdateUrlDto) {
-    return this.prisma.url.update({
+    return await this.prisma.url.update({
       where: { id },
       data: { ...updateUrlDto, deletedAt: new Date() },
     });

@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 
 import * as bcrypt from 'bcrypt';
@@ -10,7 +10,7 @@ import { env } from 'node:process';
 
 @Injectable()
 export class AuthService {
-  private EXPIRATION_TIME = '7 days';
+  readonly EXPIRATION_TIME = '7 days';
 
   constructor(
     private jwtService: JwtService,
