@@ -7,12 +7,14 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+
 import { AuthLoginDTO } from './dto/auth-login.dto';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
-import { AuthService } from './auth.service';
-import { UsersService } from 'src/users/users.service';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthResponseDTO } from './dto/auth-response.dto';
+
+import { AuthService } from './auth.service';
+import { UsersService } from '@/users/users.service';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
