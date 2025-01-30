@@ -42,7 +42,7 @@ describe('UsersController', () => {
     jest.spyOn(usersService, 'create').mockResolvedValue(createdUser);
 
     const result = await controller.create(createUserDto);
-    expect(() => usersService.create(createUserDto)).not.toThrow();
+    expect(usersService.create).toHaveBeenCalledWith(createUserDto);
     expect(result).toEqual(createdUser);
   });
 
@@ -51,7 +51,7 @@ describe('UsersController', () => {
     jest.spyOn(usersService, 'findAll').mockResolvedValue(users);
 
     const result = await controller.findAll();
-    expect(() => usersService.findAll()).not.toThrow();
+    expect(usersService.findAll).toHaveBeenCalled();
     expect(result).toEqual(users);
   });
 
@@ -60,7 +60,7 @@ describe('UsersController', () => {
     jest.spyOn(usersService, 'findOne').mockResolvedValue(user);
 
     const result = await controller.findOne('1');
-    expect(() => usersService.findOne({ id: 1 }));
+    expect(usersService.findOne).toHaveBeenCalledWith({ id: 1 });
     expect(result).toEqual(user);
   });
 
@@ -70,7 +70,7 @@ describe('UsersController', () => {
     jest.spyOn(usersService, 'update').mockResolvedValue(updatedUser);
 
     const result = await controller.update('1', updateUserDto);
-    expect(() => usersService.update(1, updateUserDto));
+    expect(usersService.update).toHaveBeenCalledWith(1, updateUserDto);
     expect(result).toEqual(updatedUser);
   });
 
@@ -86,7 +86,7 @@ describe('UsersController', () => {
     jest.spyOn(usersService, 'remove').mockResolvedValue(deletedUser);
 
     const result = await controller.remove('1');
-    expect(() => usersService.remove(1));
+    expect(usersService.remove).toHaveBeenCalledWith(1);
     expect(result).toEqual({ message: 'User with id 1 deleted successfully' });
   });
 });
