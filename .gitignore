@@ -1,15 +1,40 @@
-# compiled output
-/dist
-/node_modules
-/build
-
-# Logs
-logs
-*.log
+# Dependencies
+node_modules/
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Logs
 lerna-debug.log*
 
 # OS

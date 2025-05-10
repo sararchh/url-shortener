@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UpdateUrlDto } from './dto/update-url.dto';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -24,7 +28,10 @@ export class UrlsService {
 
       return { ...createdUrl, shortUrl: `${domain}/urls/${createdUrl.shortUrl}` };
     } catch (error) {
-      throw new NotFoundException(`URL not created - ${error.message}`);
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to create URL');
     }
   }
 
@@ -36,7 +43,10 @@ export class UrlsService {
       }
       return await this.prisma.url.findMany({ where });
     } catch (error) {
-      throw new NotFoundException(`URLs not found - ${error.message}`);
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to fetch URLs');
     }
   }
 
