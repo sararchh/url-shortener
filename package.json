@@ -10,6 +10,9 @@
       "pre-commit": "lint-staged"
     }
   },
+  "engines": {
+    "node": ">=20.16.0"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
